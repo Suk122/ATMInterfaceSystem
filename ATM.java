@@ -1,12 +1,16 @@
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 // Class 1
-class Account {
+class
+        Account {
     int accNumber;
     String name;
     double balance;
     int pin;
+
+    ArrayList<String> History = new ArrayList<>();
 }
 
 // Class 2 (Main class)
@@ -71,7 +75,8 @@ public class ATM {
                     System.out.println("2. Deposit");
                     System.out.println("3. Withdraw");
                     System.out.println("4. Change Pin");
-                    System.out.println("5.Logout");
+                    System.out.println("5. Transaction History");
+                    System.out.println("6.Logout");
 
                     choice = sc.nextInt();
 
@@ -81,17 +86,20 @@ public class ATM {
                             break;
 
                         case 2:
-                            System.out.print("Enter amount to deposit: ");
-                            currentUser.balance += sc.nextDouble();
+                            System.out.println("Enter amount: Rs." ); //Ask first
+                            double amount = sc.nextDouble();  //take input
+                            currentUser.balance += amount;
+
+                            currentUser.History.add("Deposited: " + amount);
                             System.out.println("Amount Deposited Successfully");
                             break;
 
                         case 3:
-                            System.out.print("Enter amount to withdraw: ");
+                            System.out.println("Enter amount");
                             double amt = sc.nextDouble();
-
                             if (amt <= currentUser.balance) {
                                 currentUser.balance -= amt;
+                                currentUser.History.add("Withdrawn: " + amt);
                                 System.out.println("Withdrawal Successful");
                             } else {
                                 System.out.println("Insufficient Balance");
@@ -112,14 +120,24 @@ public class ATM {
                             break;
 
                         case 5:
-                            System.out.println("Logged out");
+                            if(currentUser.History.isEmpty()) {
+                                System.out.println("No Transaction yet");
+                            }else{
+                                for(String h: currentUser.History){
+                                    System.out.println(h);
+                                }
+                            }
                             break;
+
+                        case 6:
+                                System.out.println("Logged out");
+                                break;
 
                         default:
                             System.out.println("Invalid choice");
                     }
 
-                } while (choice != 5);
+                } while (choice != 6);
             } else if (option == 2) {
 
                 Account newAcc = new Account();
